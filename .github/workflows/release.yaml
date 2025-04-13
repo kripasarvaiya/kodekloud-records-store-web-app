@@ -10,10 +10,10 @@ on:
   #     - main
 
 # 👇 Uncomment to apply least privilege permissions
-# permissions:
-#   contents: read  
-#   packages: write  
-#   id-token: write  
+permissions:
+  contents: read  
+  packages: write  
+  id-token: write  
 
 jobs:
   build-and-test:
