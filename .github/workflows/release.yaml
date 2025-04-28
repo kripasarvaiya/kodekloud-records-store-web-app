@@ -56,17 +56,17 @@ jobs:
         uses: actions/checkout@v3
 
       # 👇 Uncomment in "Generating and Validating an SBOM" 
-      # - name: Generate SBOM
-      #   run: |
-      #     curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh
-      #     syft . -o cyclonedx-json > sbom.json
+      - name: Generate SBOM
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh
+          syft . -o cyclonedx-json > sbom.json
 
       # 👇 Uncomment to store SBOM artifact
-      # - name: Upload SBOM
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: sbom
-      #     path: sbom.json
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v3
+        with:
+          name: sbom
+          path: sbom.json
 
       - name: Get version from Git tag
         id: get_version
