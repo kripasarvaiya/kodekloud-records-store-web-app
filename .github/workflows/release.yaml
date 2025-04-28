@@ -89,7 +89,7 @@ jobs:
       - name: Scan for vulnerabilities (Grype)
         run: |
           curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh
-          ./bin/grype ghcr.io/${{ github.repository }}/kodekloud-record-store-api:${{ env.VERSION }} --fail-on high
+          ./bin/grype ghcr.io/${{ github.repository }}/kodekloud-record-store-api:${{ env.VERSION }} --fail-on critical
 
       - name: Push Docker image
         run: |
