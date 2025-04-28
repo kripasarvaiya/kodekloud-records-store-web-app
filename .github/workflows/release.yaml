@@ -86,10 +86,10 @@ jobs:
           docker tag ghcr.io/${{ github.repository }}/kodekloud-record-store-api:${{ env.VERSION }} ghcr.io/${{ github.repository }}/kodekloud-record-store-api:latest
 
       # 👇 Uncomment in "Supply Chain Security" 
-      # - name: Scan for vulnerabilities (Grype)
-      #   run: |
-      #     curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh
-      #     grype ghcr.io/${{ github.repository }}/kodekloud-record-store-api:${{ env.VERSION }} --fail-on high
+      - name: Scan for vulnerabilities (Grype)
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh
+          grype ghcr.io/${{ github.repository }}/kodekloud-record-store-api:${{ env.VERSION }} --fail-on high
 
       - name: Push Docker image
         run: |
