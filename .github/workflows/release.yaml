@@ -29,6 +29,11 @@ jobs:
           python -m venv venv
           source venv/bin/activate
           pip install -r src/requirements.txt
+          
+      - name: Upgrade setuptools
+        run: |
+          source venv/bin/activate
+          pip install --upgrade setuptools
 
       # 👇 Uncomment this step in "Secret Management Best Practices" 
       - name: Run security audit (pip-audit)
