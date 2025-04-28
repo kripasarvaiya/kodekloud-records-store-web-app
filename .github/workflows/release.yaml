@@ -58,7 +58,7 @@ jobs:
       # 👇 Uncomment in "Generating and Validating an SBOM" 
       - name: Generate SBOM
         run: |
-          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh
+          curl -sSfL https://api.github.com/repos/anchore/syft/releases/latest | sh
           syft . -o cyclonedx-json > sbom.json
 
       # 👇 Uncomment to store SBOM artifact
