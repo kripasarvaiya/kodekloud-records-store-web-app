@@ -124,7 +124,7 @@ jobs:
       - name: Run post-deployment health check in Production
         run: |
           echo "Checking health of Production..."
-          curl -f https://8000-port-5jbtb56776rcinru.kk-lab-dev.kodekloud.com/health || exit 1
+          curl -f http://your-prod-service-url/health || exit 1
 
       # 👇 Uncomment in "Rollback on Failure" 
       - name: Rollback if deployment fails
