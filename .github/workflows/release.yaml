@@ -56,9 +56,13 @@ jobs:
         uses: actions/checkout@v3
 
       # 👇 Uncomment in "Generating and Validating an SBOM" 
+      - name: Install Syft and Check Version
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh
+          syft version
+          
       - name: Generate SBOM
         run: |
-          curl -sSfL https://api.github.com/repos/anchore/syft/releases/latest | sh
           syft . -o cyclonedx-json > sbom.json
 
       # 👇 Uncomment to store SBOM artifact
