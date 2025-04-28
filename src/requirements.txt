@@ -11,6 +11,7 @@ opentelemetry-exporter-otlp
 opentelemetry-instrumentation-fastapi
 opentelemetry-instrumentation-sqlalchemy
 opentelemetry-instrumentation-celery
+pytest
 # socket
 # time
 # sys
