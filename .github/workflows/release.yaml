@@ -65,7 +65,7 @@ jobs:
 
       - name: Get version from Git tag
         id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        run: echo "VERSION=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
 
       # 👇 Replace with secure authentication using GitHub Secrets
       - name: Log in to GitHub Container Registry
