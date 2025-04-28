@@ -59,11 +59,11 @@ jobs:
       - name: Install Syft and Check Version
         run: |
           curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh
-          syft version
+          ./bin/syft version
           
       - name: Generate SBOM
         run: |
-          syft . -o cyclonedx-json > sbom.json
+          ./bin/syft . -o cyclonedx-json > sbom.json
 
       # 👇 Uncomment to store SBOM artifact
       - name: Upload SBOM
