@@ -118,9 +118,9 @@ jobs:
           curl -f http://your-prod-service-url/health || exit 1
 
       # 👇 Uncomment in "Rollback on Failure" 
-      # - name: Rollback if deployment fails
-      #   if: failure()
-      #   run: |
-      #     echo "Rolling back to previous version..."
-      #     docker pull ghcr.io/${{ github.repository }}/kodekloud-record-store-api:latest
-      #     # Deploy the last known good version
+      - name: Rollback if deployment fails
+        if: failure()
+        run: |
+          echo "Rolling back to previous version..."
+          docker pull ghcr.io/${{ github.repository }}/kodekloud-record-store-api:latest
+          # Deploy the last known good version
