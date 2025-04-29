@@ -1,15 +1,19 @@
 name: Secure Release Pipeline
 
 on:
-  push:
+  # push:
+  #   branches:
+  #     - main
+  pull_request:
+    types: [closed]
     branches:
       - main
-
+      
 # 👇 Uncomment to apply least privilege permissions
-permissions:
-  contents: read  
-  packages: write  
-  id-token: write  
+# permissions:
+#   contents: read  
+#   packages: write  
+#   id-token: write  
 
 jobs:
   build-and-test:
@@ -36,11 +40,11 @@ jobs:
           pip install --upgrade setuptools
 
       # 👇 Uncomment this step in "Secret Management Best Practices" 
-      - name: Run security audit (pip-audit)
-        run: |
-          source venv/bin/activate
-          pip install pip-audit
-          pip-audit 
+      # - name: Run security audit (pip-audit)
+      #   run: |
+      #     source venv/bin/activate
+      #     pip install pip-audit
+      #     pip-audit 
 
       - name: Run tests
         run: |
@@ -55,41 +59,37 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 👇 Uncomment in "Generating and Validating an SBOM" 
-      - name: Install Syft and Check Version
-        run: |
-          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh
-          ./bin/syft version
+      # # 👇 Uncomment in "Generating and Validating an SBOM" 
+      # - name: Install Syft and Check Version
+      #   run: |
+      #     curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh
+      #     ./bin/syft . -o cyclonedx-json > sbom.json
           
-      - name: Generate SBOM
-        run: |
-          ./bin/syft . -o cyclonedx-json > sbom.json
-
-      # 👇 Uncomment to store SBOM artifact
-      - name: Upload SBOM
-        uses: actions/upload-artifact@v4
-        with:
-          name: sbom
-          path: sbom.json
+      # # 👇 Uncomment to store SBOM artifact
+      # - name: Upload SBOM
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: sbom
+      #     path: sbom.json
 
       - name: Get version from Git tag
         id: get_version
         run: echo "VERSION=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
 
       # 👇 Replace with secure authentication using GitHub Secrets
-      - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.REGISTRY_PAT }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+      # - name: Log in to GitHub Container Registry
+      #   run: echo "${{ secrets.REGISTRY_PAT }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
 
       - name: Build and tag Docker image
         run: |
           docker build -t ghcr.io/${{ github.repository }}/kodekloud-record-store-api:${{ env.VERSION }} .
           docker tag ghcr.io/${{ github.repository }}/kodekloud-record-store-api:${{ env.VERSION }} ghcr.io/${{ github.repository }}/kodekloud-record-store-api:latest
 
-      # 👇 Uncomment in "Supply Chain Security" 
-      - name: Scan for vulnerabilities (Grype)
-        run: |
-          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh
-          ./bin/grype ghcr.io/${{ github.repository }}/kodekloud-record-store-api:${{ env.VERSION }} --fail-on critical
+      # # 👇 Uncomment in "Supply Chain Security" 
+      # - name: Scan for vulnerabilities (Grype)
+      #   run: |
+      #     curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh
+      #     ./bin/grype ghcr.io/${{ github.repository }}/kodekloud-record-store-api:${{ env.VERSION }} --fail-on critical
 
       - name: Push Docker image
         run: |
@@ -109,7 +109,7 @@ jobs:
       - name: Run post-deployment health check in Dev
         run: |
           echo "Checking health of Dev environment..."
-          curl -f https://8000-port-icofesoidde2gav7.kk-lab-dev.kodekloud.com/health || exit 1
+        # curl -f https://8000-port-icofesoidde2gav7.kk-lab-dev.kodekloud.com/health || exit 1
 
   deploy-prod:
     needs: deploy-dev  
@@ -128,12 +128,12 @@ jobs:
       - name: Run post-deployment health check in Production
         run: |
           echo "Checking health of Production..."
-          curl -f http://your-prod-service-url/health || exit 1
+        # curl -f https://8000-port-icofesoidde2gav7.kk-lab-dev.kodekloud.com/health || exit 1
 
-      # 👇 Uncomment in "Rollback on Failure" 
-      - name: Rollback if deployment fails
-        if: failure()
-        run: |
-          echo "Rolling back to previous version..."
-          docker pull ghcr.io/${{ github.repository }}/kodekloud-record-store-api:latest
-          # Deploy the last known good version
+      # # 👇 Uncomment in "Rollback on Failure" 
+      # - name: Rollback if deployment fails
+      #   if: failure()
+      #   run: |
+      #     echo "Rolling back to previous version..."
+      #     docker pull ghcr.io/${{ github.repository }}/kodekloud-record-store-api:latest
+      #     # Deploy the last known good version
