@@ -126,6 +126,10 @@ jobs:
           echo "Checking health of Production..."
           curl -f http://your-prod-service-url/health || exit 1
 
+      # Authentication
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.REGISTRY_PAT }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+
       # 👇 Uncomment in "Rollback on Failure" 
       - name: Rollback if deployment fails
         if: failure()
