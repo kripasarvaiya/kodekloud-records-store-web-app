@@ -73,8 +73,8 @@ jobs:
         run: echo "VERSION=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
 
       # 👇 Replace with secure authentication using GitHub Secrets
-      # - name: Log in to GitHub Container Registry
-      #   run: echo "${{ secrets.REGISTRY_PAT }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.REGISTRY_PAT }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
 
       - name: Build and tag Docker image
         run: |
